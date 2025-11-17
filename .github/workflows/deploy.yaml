@@ -2,7 +2,7 @@ name: Deploy static site to EC2
 
 on:
   push:
-    branches: [ "main", "workflow_dispatch" ]
+    branches: [ "master", "workflow_dispatch" ]
 
 jobs:
   deploy:
