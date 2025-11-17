@@ -10,14 +10,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Prepare SSH
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{secrets.EC2_SSH_KEY}}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H "${{secrets.EC2_HOST}}" >> ~/.ssh/known_hosts
-
       - name: Debug SSH key presence
         run: |
           echo "Chars in EC2_SSH_KEY:"
@@ -26,6 +18,14 @@ jobs:
           echo "${{ secrets.EC2_SSH_KEY }}" | wc -l
           echo "Contains BEGIN line?"
           echo "${{ secrets.EC2_SSH_KEY }}" | grep -c "BEGIN"
+
+      - name: Prepare SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{secrets.EC2_SSH_KEY}}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H "${{secrets.EC2_HOST}}" >> ~/.ssh/known_hosts
+
       - name: Copy files via SSH
         uses: appleboy/scp-action@v1
         with:
