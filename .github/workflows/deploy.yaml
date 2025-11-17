@@ -18,6 +18,14 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H "${{secrets.EC2_HOST}}" >> ~/.ssh/known_hosts
 
+      - name: Debug SSH key presence
+        run: |
+          echo "Chars in EC2_SSH_KEY:"
+          echo "${{ secrets.EC2_SSH_KEY }}" | wc -c
+          echo "Lines in EC2_SSH_KEY:"
+          echo "${{ secrets.EC2_SSH_KEY }}" | wc -l
+          echo "Contains BEGIN line?"
+          echo "${{ secrets.EC2_SSH_KEY }}" | grep -c "BEGIN"
       - name: Copy files via SSH
         uses: appleboy/scp-action@v1
         with:
